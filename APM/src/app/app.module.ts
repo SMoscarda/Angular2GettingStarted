@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 
 import { ProductListComponent } from './products/product-list.component';
 import { ProductDetailComponent } from './products/product-detail.component';
+import { ProductDetailGuard } from './products/product-guard.service';
 import { WelcomeComponent } from './home/welcome.component';
 import { ProductFilterPipe } from './products/product-filter.pipe';
 import { StarComponent } from './shared/star.component';
@@ -17,13 +18,21 @@ import { AppComponent }  from './app.component';
     BrowserModule,
     FormsModule,
     HttpModule,
+
     RouterModule.forRoot([
       { path: 'products', component: ProductListComponent },
-      { path: 'product/:id', component: ProductDetailComponent },
+      {
+        path: 'product/:id',
+        canActivate: [ProductDetailGuard],
+        component: ProductDetailComponent
+      },
       { path: 'welcome', component: WelcomeComponent },
       { path: '', redirectTo: 'welcome', pathMatch: 'full' },
       { path: '**', redirectTo: 'welcome', pathMatch: 'full' }
     ])
+  ],
+  providers: [
+    ProductDetailGuard
   ],
   declarations: [
     AppComponent,
@@ -32,7 +41,8 @@ import { AppComponent }  from './app.component';
     StarComponent,
     ProductDetailComponent,
     WelcomeComponent
-     ],
+  ],
+ 
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }
