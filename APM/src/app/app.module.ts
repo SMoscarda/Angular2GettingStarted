@@ -42,7 +42,7 @@ import { AppComponent }  from './app.component';
     ProductDetailComponent,
     WelcomeComponent
   ],
- 
+
   bootstrap: [ AppComponent ]
 })
 export class AppModule { }

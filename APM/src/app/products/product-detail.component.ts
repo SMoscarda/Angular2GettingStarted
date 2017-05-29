@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IProduct } from './product';
 import { ProductService } from './product.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription'
+import { Subscription } from 'rxjs/Subscription';
 
 
 @Component({
@@ -21,14 +21,24 @@ export class ProductDetailComponent implements OnInit {
             private _productService: ProductService) { }
 
     ngOnInit(): void { 
-        let id = +this._route.snapshot.params['id'];
-        this.pageTitle += `: ${id}`;
-       //this.product = this._productService.getProduct(id);
-        
+        this.sub = this._route.params.subscribe(
+            params => {
+                let id = +params['id'];
+                this.getProduct(id);
+            });
+    }
 
+    getProduct(id: number) {
+        this._productService.getProduct(id)
+            .subscribe(
+            product => this.product = product,
+            error => this.errorMessage = <any>error);
     }
 
     onBack(): void {
         this._router.navigate(['/products']);
+    }
+
+    ngOnDestroy(): void {
     }
 }
